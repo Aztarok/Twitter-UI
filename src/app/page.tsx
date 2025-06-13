@@ -1,6 +1,5 @@
 import Feed from "@/components/Feed";
 import Share from "@/components/Share";
-import UploadExample from "@/components/Upload";
 import Link from "next/link";
 
 export default function Home() {

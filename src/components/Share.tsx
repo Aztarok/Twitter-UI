@@ -1,13 +1,11 @@
 "use client";
-import { useState } from "react";
-import ImageDisplay from "./Image";
 import { shareAction } from "@/actions";
 import Image from "next/image";
-import ImageEditor from "./ImageEditor";
+import { useState } from "react";
+import ImageDisplay from "./Image";
 
 const Share = () => {
     const [media, setMedia] = useState<File | null>(null);
-    const [isEditorOpen, setIsEditorOpen] = useState(false);
     const handleMediaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             setMedia(e.target.files[0]);
@@ -30,7 +28,7 @@ const Share = () => {
                         <div className="absolute top-2 left-2 bg-black bg-opacity-50 text-white py-1 px-4 rounded-full font-bold text-sm cursor-pointer">Edit</div>
                     </div>
                 )}
-                {isEditorOpen && previewURL && <ImageEditor onClose={() => setIsEditorOpen(false)} previewURL={previewURL} />}
+                {/* {isEditorOpen && previewURL && <ImageEditor onClose={() => setIsEditorOpen(false)} previewURL={previewURL} />} */}
                 <div className="flex items-center justify-between gap-4 flex-wrap">
                     {" "}
                     <div className="flex gap-4 flex-wrap">

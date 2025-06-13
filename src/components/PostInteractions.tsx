@@ -1,12 +1,9 @@
 "use client";
 
-import { Interactions } from "@/actions";
-import ImageDisplay from "./Image";
-
 type Props = {
-    comments: number;
-    retweets: number;
-    likes: number;
+    comments: string | number;
+    retweets: string | number;
+    likes: string | number;
 };
 const PostInteractions = ({ comments, retweets, likes }: Props) => {
     return (
