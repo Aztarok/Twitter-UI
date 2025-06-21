@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ImageDisplay from "./Image";
+import ImageDisplay from "./ImageDisplay";
 
 const menuList = [
     {
@@ -76,17 +76,32 @@ const LeftBar = () => {
                 {/* MENU LIST */}
                 <div className="flex flex-col gap-4">
                     {menuList.map((item) => (
-                        <Link href={item.link} className="p-2 rounded-full hover:bg-[#181818] flex items-center gap-4" key={item.id}>
-                            <ImageDisplay path={`/icons/${item.icon}`} alt={item.name} width={24} height={24} />
+                        <Link
+                            href={item.link}
+                            className="p-2 rounded-full hover:bg-[#181818] flex items-center gap-4"
+                            key={item.id}
+                        >
+                            <ImageDisplay
+                                path={`/icons/${item.icon}`}
+                                alt={item.name}
+                                width={24}
+                                height={24}
+                            />
                             <span className="hidden xxl:inline">{item.name}</span>
                         </Link>
                     ))}
                 </div>
                 {/* BUTTON */}
-                <Link href={"/"} className="xxl:hidden bg-white text-black rounded-full font-bold w-12 h-12 flex items-center justify-center">
+                <Link
+                    href={"/"}
+                    className="xxl:hidden bg-white text-black rounded-full font-bold w-12 h-12 flex items-center justify-center"
+                >
                     <ImageDisplay path="/icons/post.svg" alt="New Post" width={24} height={24} />
                 </Link>
-                <Link href={"/"} className="hidden xxl:block bg-white text-black rounded-full font-bold py-2 px-20">
+                <Link
+                    href={"/"}
+                    className="hidden xxl:block bg-white text-black rounded-full font-bold py-2 px-20"
+                >
                     Post
                 </Link>
             </div>
@@ -94,7 +109,13 @@ const LeftBar = () => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <div className="relative w-10 h-10 rounded-full overflow-hidden">
-                        <ImageDisplay path="/general/avatar.png" alt="avatar" width={100} height={100} tr={true} />
+                        <ImageDisplay
+                            path="/general/avatar.png"
+                            alt="avatar"
+                            width={100}
+                            height={100}
+                            tr={true}
+                        />
                     </div>
                     <div className="hidden xxl:flex flex-col">
                         <span className="font-bold">Aztarok</span>

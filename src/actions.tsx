@@ -1,13 +1,17 @@
 "use server";
 
-export const shareAction = async (formData: FormData) => {
+const privateKey = process.env.PRIVATE_KEY as string;
+
+export const shareAction = async (formData: FormData, settings: { type: "original" | "wide" | "square"; sensitive: boolean }) => {
     const file = formData.get("file") as File;
     if (!file) throw new Error("No file provided!");
 
-    const privateKey = process.env.PRIVATE_KEY as string;
     const bytes = await file.arrayBuffer();
     const base64File = Buffer.from(bytes).toString("base64");
 
+    const transformation = `w-600,${settings.type === "square" ? "ar-1-1" : settings.type === "wide" ? "ar-16-9" : ""}`;
+    console.log(transformation);
+    console.log(file);
     const response = await fetch("https://upload.imagekit.io/api/v1/files/upload", {
         method: "POST",
         headers: {
@@ -19,7 +23,8 @@ export const shareAction = async (formData: FormData) => {
             fileName: file.name,
             folder: "/posts",
             useUniqueFileName: "true",
-            transformation: JSON.stringify({ pre: "w-600" }),
+            ...(file.type.includes("image") && { transformation: JSON.stringify({ pre: transformation }) }),
+            customMetadata: JSON.stringify({ sensitive: settings.sensitive }),
         }),
     });
 
@@ -30,6 +35,7 @@ export const shareAction = async (formData: FormData) => {
     }
 
     const data = await response.json();
+    console.log(data);
     return data;
 };
 
@@ -53,4 +59,39 @@ export const Interactions = async () => {
     };
 
     return { comments: formatNumber(rawComments), retweets: formatNumber(rawRetweets), likes: formatNumber(rawLikes) };
+};
+
+interface FileDetailsResponse {
+    width: number;
+    height: number;
+    filePath: string;
+    url: string;
+    fileType: string;
+    customMetadata: { sensitive: boolean };
+}
+export const getFileDetails = async (fileId: string): Promise<FileDetailsResponse | null> => {
+    if (!fileId) return null;
+    try {
+        const res = await fetch(`https://api.imagekit.io/v1/files/${fileId}/details`, {
+            headers: {
+                Authorization: "Basic " + Buffer.from(`${privateKey}:`).toString("base64"),
+            },
+            cache: "no-cache",
+        });
+
+        if (!res.ok) throw new Error(await res.text());
+        const fullData = await res.json();
+        const filteredData: FileDetailsResponse = {
+            width: fullData.width,
+            height: fullData.height,
+            filePath: fullData.filePath,
+            url: fullData.url,
+            fileType: fullData.fileType,
+            customMetadata: fullData.customMetadata,
+        };
+        return filteredData as FileDetailsResponse;
+    } catch (error) {
+        console.error("Error fetching file details:", error);
+        return null;
+    }
 };
