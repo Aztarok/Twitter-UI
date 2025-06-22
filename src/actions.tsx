@@ -2,14 +2,19 @@
 
 const privateKey = process.env.PRIVATE_KEY as string;
 
-export const shareAction = async (formData: FormData, settings: { type: "original" | "wide" | "square"; sensitive: boolean }) => {
+export const shareAction = async (
+    formData: FormData,
+    settings: { type: "original" | "wide" | "square"; sensitive: boolean }
+) => {
     const file = formData.get("file") as File;
     if (!file) throw new Error("No file provided!");
 
     const bytes = await file.arrayBuffer();
     const base64File = Buffer.from(bytes).toString("base64");
 
-    const transformation = `w-600,${settings.type === "square" ? "ar-1-1" : settings.type === "wide" ? "ar-16-9" : ""}`;
+    const transformation = `w-600,${
+        settings.type === "square" ? "ar-1-1" : settings.type === "wide" ? "ar-16-9" : ""
+    }`;
     console.log(transformation);
     console.log(file);
     const response = await fetch("https://upload.imagekit.io/api/v1/files/upload", {
@@ -23,7 +28,9 @@ export const shareAction = async (formData: FormData, settings: { type: "origina
             fileName: file.name,
             folder: "/posts",
             useUniqueFileName: "true",
-            ...(file.type.includes("image") && { transformation: JSON.stringify({ pre: transformation }) }),
+            ...(file.type.includes("image") && {
+                transformation: JSON.stringify({ pre: transformation }),
+            }),
             customMetadata: JSON.stringify({ sensitive: settings.sensitive }),
         }),
     });
@@ -58,7 +65,11 @@ export const Interactions = async () => {
         return n;
     };
 
-    return { comments: formatNumber(rawComments), retweets: formatNumber(rawRetweets), likes: formatNumber(rawLikes) };
+    return {
+        comments: formatNumber(rawComments),
+        retweets: formatNumber(rawRetweets),
+        likes: formatNumber(rawLikes),
+    };
 };
 
 interface FileDetailsResponse {
@@ -76,7 +87,7 @@ export const getFileDetails = async (fileId: string): Promise<FileDetailsRespons
             headers: {
                 Authorization: "Basic " + Buffer.from(`${privateKey}:`).toString("base64"),
             },
-            cache: "no-cache",
+            next: { revalidate: 3600 },
         });
 
         if (!res.ok) throw new Error(await res.text());

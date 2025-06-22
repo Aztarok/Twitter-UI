@@ -5,7 +5,7 @@ import PostInteractions from "./PostInteractions";
 import DisplayVideo from "./DisplayVideo";
 
 async function toBase64(url: string): Promise<string> {
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, { next: { revalidate: 3600 } });
     const buffer = await res.arrayBuffer();
     const b64 = Buffer.from(buffer).toString("base64");
     const mime = url.endsWith(".png") ? "image/png" : "image/jpeg";

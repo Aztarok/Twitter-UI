@@ -17,7 +17,10 @@ const DisplayVideo = ({ path, className }: VideoTypes) => {
                     className={className}
                     alt="Video"
                     controls
-                    transformation={[{ width: "1920", height: "1080", quality: 100 }]}
+                    transformation={[
+                        { width: "1920", height: "1080", quality: 100 },
+                        { raw: "l-text,i-Aztarok,fs-100,co-white,l-end" },
+                    ]}
                 />
             </ImageKitProvider>
         </div>
