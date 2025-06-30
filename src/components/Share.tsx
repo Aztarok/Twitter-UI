@@ -2,7 +2,7 @@
 import { shareAction } from "@/actions";
 import Image from "next/image";
 import { useState } from "react";
-import ImageDisplay from "./ImageDisplay";
+import DisplayImage from "./DisplayImage";
 import ImageEditor from "./ImageEditor";
 
 const Share = () => {
@@ -23,7 +23,7 @@ const Share = () => {
         <form action={(formData) => shareAction(formData, settings)} className="p-4 flex gap-4">
             {/* AVATAR */}
             <div className="relative w-10 h-10 rounded-full overflow-hidden">
-                <ImageDisplay
+                <DisplayImage
                     path="/general/avatar.png"
                     alt="Avatar"
                     width={100}
@@ -100,7 +100,7 @@ const Share = () => {
                             name="file"
                         />
                         <label htmlFor="file">
-                            <ImageDisplay
+                            <DisplayImage
                                 path="/icons/image.svg"
                                 alt="Image"
                                 width={20}
@@ -108,35 +108,35 @@ const Share = () => {
                                 className="cursor-pointer"
                             />
                         </label>
-                        <ImageDisplay
+                        <DisplayImage
                             path="/icons/gif.svg"
                             alt="Image"
                             width={20}
                             height={20}
                             className="cursor-pointer"
                         />
-                        <ImageDisplay
+                        <DisplayImage
                             path="/icons/poll.svg"
                             alt="Image"
                             width={20}
                             height={20}
                             className="cursor-pointer"
                         />
-                        <ImageDisplay
+                        <DisplayImage
                             path="/icons/emoji.svg"
                             alt="Image"
                             width={20}
                             height={20}
                             className="cursor-pointer"
                         />
-                        <ImageDisplay
+                        <DisplayImage
                             path="/icons/schedule.svg"
                             alt="Image"
                             width={20}
                             height={20}
                             className="cursor-pointer"
                         />
-                        <ImageDisplay
+                        <DisplayImage
                             path="/icons/location.svg"
                             alt="Image"
                             width={20}

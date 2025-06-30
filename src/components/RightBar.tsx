@@ -5,7 +5,7 @@ import Search from "./Search";
 
 const RightBar = () => {
     return (
-        <div className="p4-4 flex flex-col gap-4 sticky top-0 h-max">
+        <div className="pt-4 flex flex-col gap-4 sticky top-0 h-max">
             <Search />
             <PopularTags />
             <Reccomendations />

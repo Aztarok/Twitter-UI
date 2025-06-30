@@ -1,8 +1,9 @@
 import { getFileDetails, Interactions } from "@/actions";
-import ImageDisplay from "./ImageDisplay";
+import ImageDisplay from "./DisplayImage";
 import PostInfo from "./PostInfo";
 import PostInteractions from "./PostInteractions";
 import DisplayVideo from "./DisplayVideo";
+import Link from "next/link";
 
 async function toBase64(url: string): Promise<string> {
     const res = await fetch(url, { next: { revalidate: 3600 } });
@@ -12,7 +13,7 @@ async function toBase64(url: string): Promise<string> {
     return `data:${mime};base64,${b64}`;
 }
 
-const Post = async () => {
+const Post = async ({ type }: { type?: "status" | "comment" }) => {
     // const fileDetails = await getFileDetails("68518b83b13a1025375ab275");
     // const fileDetails = await getFileDetails("68545896b13a1025371eb8d2");
     // const fileDetails = await getFileDetails("68571e1eb13a102537156195");
@@ -41,9 +42,14 @@ const Post = async () => {
                 <span>Aztarok reposted</span>
             </div>
             {/* POST CONTENT */}
-            <div className="flex gap-4">
+            {/* <div className="flex gap-4"> */}
+            <div className={`flex gap-4 ${type === "status" && "flex-col"}`}>
                 {/* AVATAR */}
-                <div className="relative w-10 h-10 rounded-full overflow-hidden">
+                <div
+                    className={`${
+                        type === "status" && "hidden"
+                    } relative w-10 h-10 rounded-full overflow-hidden`}
+                >
                     <ImageDisplay
                         path="/general/avatar.png"
                         alt="Post"
@@ -55,16 +61,49 @@ const Post = async () => {
                 {/* CONTENT */}
                 <div className="flex-1 flex flex-col gap-2">
                     {/* TOP */}
-                    <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2 flex-wrap">
-                            <h1 className="text-md font-bold">Aztarok</h1>
-                            <span className="text-textGray text-sm">@Aztarok</span>
-                            <span className="text-textGray text-sm">1 day ago</span>
-                        </div>
+                    <div className="w-full flex justify-between">
+                        <Link href={`/Aztarok`} className="flex gap-4">
+                            <div
+                                className={`${
+                                    type !== "status" && "hidden"
+                                } relative w-10 h-10 rounded-full overflow-hidden`}
+                            >
+                                <ImageDisplay
+                                    path="/general/avatar.png"
+                                    alt="Post"
+                                    width={100}
+                                    height={100}
+                                    tr={true}
+                                />
+                            </div>
+                            <div
+                                className={`flex flex-wrap ${
+                                    type === "status"
+                                        ? "flex-col gap-0 items-start"
+                                        : "items-center gap-2"
+                                }`}
+                            >
+                                <h1 className="text-md font-bold">Aztarok</h1>
+                                <span
+                                    className={`text-textGray text-sm ${
+                                        type === "status" && "text-sm"
+                                    }`}
+                                >
+                                    @Aztarok
+                                </span>
+                                {type !== "status" && (
+                                    <span className="text-textGray text-sm">1 day ago</span>
+                                )}
+                            </div>
+                        </Link>
                         <PostInfo />
                     </div>
                     {/* TEXT & MEDIA */}
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.</p>
+                    <Link href={`/Aztarok/status/123`}>
+                        <p className={`${type === "status" && "text-lg"}`}>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.
+                        </p>
+                    </Link>
                     {/* <ImageDisplay path="/general/post.jpeg" alt="Post" width={600} height={600} tr={true} /> */}
                     {fileDetails?.fileType === "image" ? (
                         <ImageDisplay
@@ -84,6 +123,9 @@ const Post = async () => {
                         />
                     )}
 
+                    {type === "status" && (
+                        <span className="text-textGray">{`12:55 PM • Jun 29, 2025`}</span>
+                    )}
                     <PostInteractions {...data} />
                 </div>
             </div>

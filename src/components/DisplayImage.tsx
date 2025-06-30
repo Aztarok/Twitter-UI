@@ -12,7 +12,7 @@ type ImageType = {
 };
 const urlEndpoint = process.env.NEXT_PUBLIC_URL_ENDPOINT;
 
-const ImageDisplay = ({
+const DisplayImage = ({
     path,
     width,
     height,
@@ -46,4 +46,4 @@ const ImageDisplay = ({
     );
 };
 
-export default ImageDisplay;
+export default DisplayImage;

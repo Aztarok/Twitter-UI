@@ -1,4 +1,4 @@
-import ImageDisplay from "./ImageDisplay";
+import ImageDisplay from "./DisplayImage";
 
 const PostInfo = () => {
     return (
